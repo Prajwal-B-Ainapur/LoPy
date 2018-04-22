@@ -9,7 +9,7 @@ import config
 lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.EU868)
 
 
-dev_addr = struct.unpack(">l", binascii.unhexlify('26011C25'))[0] #Manually set 4 byte data. NOTE: same should copied to TTN
+dev_addr = struct.unpack(">l", binascii.unhexlify('26011C25'))[0] #Manually set 4 byte data. *same should be copied at TTN.*
 nwk_swkey = binascii.unhexlify('FF1BFCF6E18EF7F62CED2328FC83456A') #Obtained from TTN
 app_swkey = binascii.unhexlify('5BBDA28B0FAD5FD6AC02421F66429664') #Obtained from TTN
 
