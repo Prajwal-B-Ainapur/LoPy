@@ -5,18 +5,13 @@ import struct
 import time
 import config
 
-# initialize LoRa in LORAWAN mode.
-# Please pick the region that matches where you are using the device:
-# Asia = LoRa.AS923
-# Australia = LoRa.AU915
-# Europe = LoRa.EU868
-# United States = LoRa.US915
+#set the region parameters based on your current location.
 lora = LoRa(mode=LoRa.LORAWAN, region=LoRa.EU868)
 
-# create an ABP authentication params
-dev_addr = struct.unpack(">l", binascii.unhexlify('26011C25'))[0]
-nwk_swkey = binascii.unhexlify('FF1BFCF6E18EF7F62CED2328FC83456A')
-app_swkey = binascii.unhexlify('5BBDA28B0FAD5FD6AC02421F66429664')
+
+dev_addr = struct.unpack(">l", binascii.unhexlify('26011C25'))[0] #Manually set 4 byte data. NOTE: same should copied to TTN
+nwk_swkey = binascii.unhexlify('FF1BFCF6E18EF7F62CED2328FC83456A') #Obtained from TTN
+app_swkey = binascii.unhexlify('5BBDA28B0FAD5FD6AC02421F66429664') #Obtained from TTN
 
 # remove all the non-default channels
 for i in range(3, 16):
@@ -30,7 +25,7 @@ lora.add_channel(2, frequency=config.LORA_FREQUENCY, dr_min=0, dr_max=5)
 # join a network using ABP (Activation By Personalization)
 lora.join(activation=LoRa.ABP, auth=(dev_addr, nwk_swkey, app_swkey))
 
-# create a LoRa socket
+# create a RAW LoRa socket
 s = socket.socket(socket.AF_LORA, socket.SOCK_RAW)
 
 # set the LoRaWAN data rate
@@ -39,6 +34,8 @@ s.setsockopt(socket.SOL_LORA, socket.SO_DR, config.LORA_NODE_DR)
 # make the socket blocking
 s.setblocking(False)
 
+
+#This part to be modified based on preferences.
 for i in range (200):
     pkt = b'This is packet number:' + bytes([i])
     print('Sending:', pkt)
